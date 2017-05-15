@@ -32,7 +32,7 @@ docker_build(
     name = "base",
     base = ":with_tmp",
     debs = [
-        "@glibc//file",
+        #"@libc6//pkg",
         "@libssl//file",
         "@openssl//file",
     ],

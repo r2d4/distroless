@@ -10,12 +10,32 @@ load("@io_bazel_rules_go//go:def.bzl", "go_repositories")
 
 go_repositories()
 
-# For the glibc base image.
-http_file(
-    name = "glibc",
-    sha256 = "bdf12aa461f2960251292c9dbfa2702d65105555b12cb36c6ac9bf8bea10b382",
-    url = "http://deb.debian.org/debian/pool/main/g/glibc/libc6_2.19-18+deb8u9_amd64.deb",
+load(
+    "//package_manager:package_manager.bzl", 
+    "package_manager_repositories",
+    "dpkg_src",
+    "dpkg")
+
+package_manager_repositories()
+
+dpkg_src(
+    name = "debian_jessie",
+    arch = "amd64",
+    distro = "jessie",
+    mirror_url = "http://cdn-fastly.deb.debian.org",
 )
+
+dpkg(
+    name = "apackage",
+    source = "@debian_jessie//src:Packages.gz"
+)
+
+# For the glibc base image.
+# http_file(
+#     name = "glibc",
+#     sha256 = "bdf12aa461f2960251292c9dbfa2702d65105555b12cb36c6ac9bf8bea10b382",
+#     url = "http://deb.debian.org/debian/pool/main/g/glibc/libc6_2.19-18+deb8u9_amd64.deb",
+# )
 
 http_file(
     name = "ca_certificates",
