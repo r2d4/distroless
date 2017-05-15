@@ -7,7 +7,6 @@ git_repository(
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_repositories")
-
 go_repositories()
 
 # For the glibc base image.
