@@ -1,0 +1,78 @@
+Package: libc3p0-java-doc
+Source: c3p0
+Version: 0.9.1.2-9
+Installed-Size: 936
+Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Architecture: all
+Suggests: libc3p0-java
+Description: library for JDBC connection pooling (documentation)
+Homepage: http://sourceforge.net/projects/c3p0
+Description-md5: 4210c65aafe7e44727050ce4fa4f9091
+Tag: devel::doc, devel::lang:java, devel::lang:sql, made-of::html,
+ role::documentation
+Section: doc
+Priority: optional
+Filename: pool/main/c/c3p0/libc3p0-java-doc_0.9.1.2-9_all.deb
+Size: 86958
+MD5sum: 0014f3af15a82ea41e55de0b1599e8b4
+SHA1: b02864eef1501fd0079c1213c905be90cc6f5a36
+SHA256: c84a36d9f61088eadeef5d0c19cf1d352456b471d86fc666c87cd9a1f83a3afd
+
+Package: ca-certificates
+Version: 20141019+deb8u3
+Installed-Size: 367
+Maintainer: Michael Shuler <michael@pbandjelly.org>
+Architecture: all
+Depends: openssl (>= 1.0.0), debconf (>= 0.5) | debconf-2.0
+Enhances: openssl
+Breaks: ca-certificates-java (<< 20121112+nmu1)
+Description: Common CA certificates
+Multi-Arch: foreign
+Description-md5: 085a1b1af3f2d16012dfc750cd9aedc8
+Tag: protocol::ssl, role::app-data, security::authentication
+Section: misc
+Priority: optional
+Filename: pool/main/c/ca-certificates/ca-certificates_20141019+deb8u3_all.deb
+Size: 206870
+MD5sum: f39a638adcc521e82fcfc802be156cf2
+SHA1: 4926838b39306aa467005b355e2cef55723b890f
+SHA256: bd799f47f5ae3260b6402b1fe19fe2c37f2f4125afcd19327bf69a9cf436aeff
+
+Package: ca-certificates-java
+Version: 20140324
+Installed-Size: 74
+Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
+Architecture: all
+Depends: ca-certificates (>= 20121114), openjdk-6-jre-headless (>= 6b16-1.6.1-2) | java6-runtime-headless, libnss3 (>= 3.12.10-2~)
+Description: Common CA certificates (JKS keystore)
+Multi-Arch: foreign
+Description-md5: 304cd3554728e5d076f8ecbb3b5057d8
+Tag: protocol::ssl, role::app-data, security::authentication,
+ security::cryptography
+Section: java
+Priority: optional
+Filename: pool/main/c/ca-certificates-java/ca-certificates-java_20140324_all.deb
+Size: 13704
+MD5sum: fdb0b383295f77cac2f43558fee27233
+SHA1: 2e2d64cfe73e8695e572b771f3145e396541fe84
+SHA256: 86e20ad98bb0cecf4bfda6cc1ac95b75c87c6677dff00b599e5110ec3b3580eb
+
+Package: cabal-debian
+Version: 4.17.4-1
+Installed-Size: 44806
+Maintainer: Debian Haskell Group <pkg-haskell-maintainers@lists.alioth.debian.org>
+Architecture: amd64
+Depends: libbz2-1.0, libc6 (>= 2.14), libffi6 (>= 3.0.4), libgmp10, zlib1g (>= 1:1.1.4), debhelper (>= 9)
+Recommends: apt-file
+Conflicts: haskell-debian-utils (<< 3.59)
+Description: Create a debianization for a cabal package
+Homepage: https://github.com/ddssff/cabal-debian
+Description-md5: 0eea526fbaa3235dbfc97cf2a8823843
+Section: utils
+Priority: extra
+Filename: pool/main/c/cabal-debian/cabal-debian_4.17.4-1_amd64.deb
+Size: 4659816
+MD5sum: 6022ce44ee37e27339c087ee0c828bee
+SHA1: 8704e37e22820612a18ef1aded351c5b6f719b0d
+SHA256: 38ea603079629a15b144e6af07e055c4be74fe57573e209eea3100d0e0381cb9
+

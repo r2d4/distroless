@@ -35,6 +35,11 @@ http_file(
     sha256 = "0fc777d9242fd93851eb49c4aafd22505048b7797c0178f20c909ff918320619",
 )
 
+http_file(
+    name = "debian_jessie",
+    url = "http://httpredir.debian.org/debian/dists/jessie/main/binary-amd64/Packages.gz"
+)
+
 # Docker rules.
 git_repository(
     name = "io_bazel_rules_docker",
