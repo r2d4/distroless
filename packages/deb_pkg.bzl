@@ -1,5 +1,4 @@
 def _impl(ctx):
-  print(ctx.file.source)
   _get_package(ctx, ctx.file.source, ctx.attr.pkg_name, ctx.outputs.deb.path)
 
 def _get_package(ctx, source_file, pkg_name, output_file):
@@ -8,21 +7,17 @@ def _get_package(ctx, source_file, pkg_name, output_file):
     "-pkg-name=" + pkg_name,
     "-output-file=" + output_file
   ]
-  runfiles = ctx.runfiles(
-      # Add some files manually.
-      files = [source_file],
-      # Add transitive files from dependencies manually.
-      # transitive_files = transitive_runfiles,
-      # # Collect runfiles from the common locations: transitively from srcs,
-      # # deps and data attributes.
-      # collect_default = True,
-  )
 
   ctx.action(
     executable = ctx.executable.package_getter,
     arguments = args,
     outputs = [ctx.outputs.deb],
   )
+
+  return struct(runfiles = ctx.runfiles(
+    files = [source_file],
+    collect_data=True
+  ))
 
 deb_pkg = rule(
   implementation=_impl,

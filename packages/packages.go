@@ -16,27 +16,32 @@ var pkgName = flag.String("pkg-name", "",
 var outputFile = flag.String("output-file", "", "")
 
 func main() {
+	wd, _ := os.Getwd()
+
+	infos, _ := ioutil.ReadDir(wd)
+	for _, info := range infos {
+		fmt.Println(info.Name())
+	}
+
+	fmt.Println(wd)
 
 	flag.Parse()
 	if *sourceFile == "" || *pkgName == "" || *outputFile == "" {
 		flag.Usage()
 		os.Exit(1)
 	}
-	fmt.Println("HELLO")
 	r, err := os.Open(*sourceFile)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error opening packages file: %s", err)
 		os.Exit(2)
 	}
 	defer r.Close()
-	fmt.Println("HELLO2")
 	archive, err := gzip.NewReader(r)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error getting reader from gzip archive: %s", err)
 		os.Exit(2)
 	}
 	defer archive.Close()
-	fmt.Println("HELLO3")
 	packageList, err := ioutil.ReadAll(archive)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading gzip archive: %s", err)
