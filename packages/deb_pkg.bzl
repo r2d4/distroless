@@ -1,23 +1,16 @@
 def _impl(ctx):
-  _get_package(ctx, ctx.file.source, ctx.attr.pkg_name, ctx.outputs.deb.path)
-
-def _get_package(ctx, source_file, pkg_name, output_file):
   args = [
-    "-source-file=" + source_file.path,
-    "-pkg-name=" + pkg_name,
-    "-output-file=" + output_file
+    "-source-file=" + ctx.file.source.path,
+    "-pkg-name=" + ctx.attr.pkg_name,
+    "-output-file=" + ctx.outputs.deb.path
   ]
 
   ctx.action(
     executable = ctx.executable.package_getter,
+    inputs = [ctx.file.source],
     arguments = args,
     outputs = [ctx.outputs.deb],
   )
-
-  return struct(runfiles = ctx.runfiles(
-    files = [source_file],
-    collect_data=True
-  ))
 
 deb_pkg = rule(
   implementation=_impl,
@@ -30,7 +23,7 @@ deb_pkg = rule(
           #TODO(r2d4): should allow multiple sources
           "source": attr.label(
             default = Label("@debian_jessie//file"),
-            cfg = "host",
+            cfg = "data",
             allow_single_file=True,
           ),
           "pkg_name": attr.string(),

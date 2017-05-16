@@ -7,8 +7,10 @@ git_repository(
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_repositories")
-
+load("@io_bazel_rules_go//go:def.bzl", "go_prefix")
 go_repositories()
+
+go_prefix("github.com/GoogleCloudPlatform/distroless")
 
 # For the glibc base image.
 http_file(
