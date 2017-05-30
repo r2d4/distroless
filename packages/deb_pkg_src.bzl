@@ -1,4 +1,4 @@
-def _deb_src_impl(ctx):
+def _deb_pkg_src_impl(ctx):
   base_url = "%s/debian/dists/%s/main/binary-%s" % (
     ctx.attr.mirror_url,
     ctx.attr.distro,
@@ -8,7 +8,8 @@ def _deb_src_impl(ctx):
   url = "%s/Packages.gz" % base_url
 
   args = [
-    "-url=" + url,
+    "-fetch-package-list",
+    "-source-url=" + url,
     "-output-file=" + ctx.outputs.package_list.path,
   ]
 
@@ -22,10 +23,10 @@ def _deb_src_impl(ctx):
     base_url = ctx.attr.mirror_url
   )
 
-deb_src = rule(
+deb_pkg_src = rule(
     attrs = {
         "source_getter": attr.label(
-            default = Label("//packages/deb_src_getter:deb_src_getter"),
+            default = Label("//packages/deb_pkg:deb_pkg"),
             cfg = "host",
             allow_files = True,
             executable = True,
@@ -37,5 +38,5 @@ deb_src = rule(
     outputs = {
         "package_list": "Packages.gz",
     },
-    implementation = _deb_src_impl,
+    implementation = _deb_pkg_src_impl,
 )

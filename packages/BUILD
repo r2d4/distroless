@@ -1,5 +1,5 @@
 load("//packages:deb_pkg.bzl", "deb_pkg")
-load("//packages:deb_src.bzl", "deb_src")
+load("//packages:deb_pkg_src.bzl", "deb_pkg_src")
 
 deb_pkg(
     name = "ca-certs",
@@ -7,7 +7,7 @@ deb_pkg(
     source = ":debian_jessie",
 )
 
-deb_src(
+deb_pkg_src(
     name = "debian_jessie",
     arch = "amd64",
     distro = "jessie",

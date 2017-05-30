@@ -1,5 +1,6 @@
 def _impl(ctx):
   args = [
+    "-fetch-package",
     "-source-file=" + ctx.file.source.path,
     "-source-url=" + ctx.attr.source.base_url,
     "-pkg-name=" + ctx.attr.pkg_name,
@@ -16,7 +17,7 @@ def _impl(ctx):
 deb_pkg = rule(
     attrs = {
         "package_getter": attr.label(
-            default = Label("//packages/deb_pkg_getter:deb_pkg_getter"),
+            default = Label("//packages/deb_pkg:deb_pkg"),
             cfg = "host",
             allow_files = True,
             executable = True,
