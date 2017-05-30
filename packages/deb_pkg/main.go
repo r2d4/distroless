@@ -1,4 +1,4 @@
-package main
+package main //import "github.com/GoogleCloudPlatform/distroless/packages/deb_pkg"
 
 import (
 	"compress/gzip"

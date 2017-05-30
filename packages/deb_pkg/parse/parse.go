@@ -1,4 +1,4 @@
-package parse
+package parse //import "github.com/GoogleCloudPlatform/distroless/packages/deb_pkg/parse"
 
 import "strings"
 

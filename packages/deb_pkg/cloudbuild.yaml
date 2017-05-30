@@ -1,0 +1,12 @@
+steps:
+- name: gcr.io/cloud-builders/golang-project
+  args: [
+    'github.com/GoogleCloudPlatform/distroless/packages/deb_pkg',
+    '--tag=gcr.io/$PROJECT_ID/deb_pkg'
+  ]
+- name: gcr.io/cloud-builders/gsutil
+  args: [
+    'cp',
+    'gopath/bin/deb_pkg',
+    'gs://$PROJECT_ID/$TAG_NAME/deb_pkg'
+  ]
