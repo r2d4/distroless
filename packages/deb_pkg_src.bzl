@@ -23,7 +23,7 @@ def _deb_pkg_src_impl(ctx):
     base_url = ctx.attr.mirror_url
   )
 
-deb_pkg_src = rule(
+deb_pkg_src = repository_rule(
     attrs = {
         "source_getter": attr.label(
             default = Label("//packages/deb_pkg:deb_pkg"),

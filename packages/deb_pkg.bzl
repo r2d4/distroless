@@ -14,7 +14,7 @@ def _impl(ctx):
     outputs = [ctx.outputs.deb],
   )
 
-deb_pkg = rule(
+deb_pkg = repository_rule(
     attrs = {
         "package_getter": attr.label(
             default = Label("//packages/deb_pkg:deb_pkg"),
