@@ -108,3 +108,7 @@ git_repository(
     commit = "4e9b3b57efb237ba09b4a319bea42bcdd4eb91e3",
     remote = "https://github.com/GoogleCloudPlatform/runtimes-common.git",
 )
+
+load("//package_manager:package_manager.bzl", "package_manager_rules")
+
+package_manager_rules()
