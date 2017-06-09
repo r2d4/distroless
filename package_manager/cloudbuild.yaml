@@ -1,0 +1,18 @@
+steps:
+- name: gcr.io/cloud-builders/bazel
+  args: [
+    '--output_base', '/workspace',
+    'build', '//package_manager:dpkg_parser.par',
+    '--strategy', 'PythonCompile=standalone'
+  ]
+
+- name: gcr.io/cloud-builders/gsutil
+  args: [
+    'cp',
+    'bazel-bin/package_manager/dpkg_parser.par',
+    #TODO(r2d4): change bucket
+    'gs://r2d4minikube/dpkg_parser.par'
+  ]
+
+# We produce no Docker images.
+images: []
