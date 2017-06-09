@@ -6,5 +6,5 @@ def package_manager_repositories():
       name = "dpkg_parser",
       url = ('https://storage.googleapis.com/r2d4minikube/dpkg_parser.par'),
       executable = True,
-      sha256 = "12f7c08b31f6270c2380a052980f381c4ca8742dad25b4009bae9abf920e4018",
+      sha256 = "5ad6ce4c3cb975c0f96e61809f1cf3e095b57c8ec3a395b8a1238fe1b13b95ba",
   )

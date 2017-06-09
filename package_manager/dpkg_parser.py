@@ -6,7 +6,7 @@ import urllib2
 import json
 
 PACKAGES_FILE_NAME = "file/Packages.json"
-DEB_FILE_NAME = "pkg.deb"
+DEB_FILE_NAME = "file/pkg.deb"
 
 parser = argparse.ArgumentParser(
     description = "Downloads a deb package from a package source file"
