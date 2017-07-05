@@ -18,6 +18,10 @@ import io
 import urllib2
 import json
 
+import re
+
+from os import path
+
 
 from package_manager.parse_metadata import parse_package_metadata
 
@@ -29,10 +33,10 @@ parser = argparse.ArgumentParser(
     description="Downloads a deb package from a package source file"
 )
 
-parser.add_argument("--packages-file", action='store',
-                    help='The file path of the Packages.gz file')
-parser.add_argument("--package-name", action='store',
-                    help='The name of the package to search for and download')
+parser.add_argument("--package-files", action='store',
+                    help='A list of Packages.gz files to use')
+parser.add_argument("--packages", action='store',
+                    help='A comma delimited list of packages to search for and download')
 
 parser.add_argument("--download-and-extract-only", action='store',
                     help='If True, download Packages.gz and make urls absolute from mirror url')
@@ -43,28 +47,53 @@ parser.add_argument("--arch", action='store',
 parser.add_argument("--distro", action='store',
                     help='The target distribution for the package list')
 
+parser.add_argument("--bazel-compatible-names", action='store',
+                    help='If True, rename package names to valid Bazel label names')
+
 def main():
     """ A tool for downloading debian packages and package metadata """
     args = parser.parse_args()
     if args.download_and_extract_only:
         download_package_list(args.mirror_url, args.distro, args.arch)
     else:
-        download_dpkg(args.packages_file, args.package_name)
+        download_dpkg(args.package_files, args.packages, args.bazel_compatible_names)
 
 
-def download_dpkg(packages_file, package_name):
+def download_dpkg(package_files, packages, bazel_compatible_names):
     """ Using an unzipped, json package file with full urls,
      downloads a .deb package
 
     Uses the 'Filename' key to download the .deb package
     """
-    with open(packages_file, 'rb') as f:
-        metadata = json.load(f)
-    pkg = metadata[package_name]
-    buf = urllib2.urlopen(pkg[FILENAME_KEY])
-    with open(DEB_FILE_NAME, 'w') as f:
-        f.write(buf.read())
+    for pkg_name in packages.split(","):
+        found = False
+        for package_file in package_files.split(","):
+            with open(package_file, 'rb') as f:
+                metadata = json.load(f)
+            if pkg_name in metadata:
+                pkg = metadata[pkg_name]
+                buf = urllib2.urlopen(pkg[FILENAME_KEY])
+                if bazel_compatible_names:
+                    pkg_name = bazel_compatible_name(pkg_name)
+                with open(path.join("file", pkg_name + ".deb"), 'w') as f:
+                    f.write(buf.read())
+                found = True
+                break
+        if not found:
+            raise Exception("Package %s not found in any of the sources" % pkg_name)
 
+def bazel_compatible_name(package_name):
+    """Returns to a bazel label compatible string
+
+    Bazel package names may contain only
+        A-Z, a-z, 0-9, '/', '-', '.', ' ', '$', '(', ')' and '_'.
+
+    """
+    old_package_name = package_name
+    package_name = re.sub(r"[^A-Za-z0-9/\-\. \$\(\)_]", "_", package_name)
+    if package_name != old_package_name:
+        print("Warning: Package name rewritten as %s from %s to satisfy bazel label name restrictions" % (package_name, old_package_name))
+    return package_name
 
 def download_package_list(mirror_url, distro, arch):
     """Downloads a debian package list, expands the relative urls,

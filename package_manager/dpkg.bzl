@@ -1,13 +1,24 @@
 def _dpkg_impl(repository_ctx):
   repository_ctx.file("file/BUILD", """
 package(default_visibility = ["//visibility:public"])
-exports_files(["pkg.deb"])
+deb_files = glob(["*.deb"])
+exports_files(deb_files)
 """)
+
+  for pkg in repository_ctx.attr.packages:
+    if pkg.find("+") > 0:
+        old_pkg = pkg
+        pkg = pkg.replace("+", "_")
+        print("Package names that contain a + will be changed to _ for bazel compatibility.")
+        print("%s will output %s//file:%s.deb" % (old_pkg, repository_ctx.name, pkg))
+
+  package_files = ",".join([repository_ctx.path(src_path) for src_path in repository_ctx.attr.sources])
 
   args = [
       repository_ctx.path(repository_ctx.attr._dpkg_parser),
-      "--packages-file", repository_ctx.path(repository_ctx.attr.source),
-      "--package-name", repository_ctx.name
+      "--package-files", package_files,
+      "--packages", ",".join(repository_ctx.attr.packages),
+      "--bazel-compatible-names=True",
   ]
 
   result = repository_ctx.execute(args)
@@ -17,9 +28,10 @@ exports_files(["pkg.deb"])
 _dpkg = repository_rule(
     _dpkg_impl,
     attrs = {
-        "source": attr.label(
-            allow_single_file = True,
+        "sources": attr.label_list(
+            allow_files = True,
         ),
+        "packages": attr.string_list(),
         "_dpkg_parser": attr.label(
             executable = True,
             default = Label("@dpkg_parser//file:dpkg_parser.par"),

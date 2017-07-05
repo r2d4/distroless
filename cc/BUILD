@@ -7,7 +7,7 @@ docker_build(
     name = "cc",
     base = "//base:base",
     debs = [
-        "@libgcc1//file:pkg.deb",
-        "@libstdcpp6//file",
+        "@package_bundle//file:libgcc1.deb",
+        "@package_bundle//file:libstdc__6.deb",
     ],
 )

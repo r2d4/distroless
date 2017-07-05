@@ -9,7 +9,7 @@ def _impl(ctx):
 cacerts = rule(
     attrs = {
         "deb": attr.label(
-            default = Label("@ca-certificates//file:pkg.deb"),
+            default = Label("@package_bundle//file:ca-certificates.deb"),
             allow_files = [".deb"],
             single_file = True,
         ),

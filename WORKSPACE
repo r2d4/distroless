@@ -33,63 +33,29 @@ dpkg_src(
     url = "http://deb.debian.org",
 )
 
-# For the glibc base image.
 dpkg(
-    name = "libc6",
-    source = "@debian_jessie//file:Packages.json",
-)
+    name = "package_bundle",
+    packages = [
+        "libc6",
+        "ca-certificates",
+        "openssl",
+        "libssl1.0.0",
 
-dpkg(
-    name = "ca-certificates",
-    source = "@debian_jessie//file:Packages.json",
-)
+        #java
+        "zlib1g",
+        "libgcc1",
+        "libstdc++6",
+        "openjdk-8-jre-headless",
 
-dpkg(
-    name = "openssl",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-dpkg(
-    name = "libssl1.0.0",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-# For Java
-dpkg(
-    name = "zlib1g",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-dpkg(
-    name = "openjdk-8-jre-headless",
-    source = "@debian_jessie_backports//file:Packages.json",
-)
-
-dpkg(
-    name = "libgcc1",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-http_file(
-    name = "libstdcpp6",
-    sha256 = "f1509bbabd78e89c861de16931aec5988e1215649688fd4f8dfe1af875a7fbef",
-    url = "http://deb.debian.org/debian/pool/main/g/gcc-4.9/libstdc++6_4.9.2-10_amd64.deb",
-)
-
-# For Python
-dpkg(
-    name = "libpython2.7-minimal",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-dpkg(
-    name = "python2.7-minimal",
-    source = "@debian_jessie//file:Packages.json",
-)
-
-dpkg(
-    name = "libpython2.7-stdlib",
-    source = "@debian_jessie//file:Packages.json",
+        #python
+        "libpython2.7-minimal",
+        "python2.7-minimal",
+        "libpython2.7-stdlib",
+    ],
+    sources = [
+        "@debian_jessie//file:Packages.json",
+        "@debian_jessie_backports//file:Packages.json",
+    ],
 )
 
 # For Jetty

@@ -6,8 +6,8 @@ docker_build(
     name = "java8",
     base = "//cc:cc",
     debs = [
-        "@zlib1g//file:pkg.deb",
-        "@openjdk-8-jre-headless//file:pkg.deb",
+        "@package_bundle//file:zlib1g.deb",
+        "@package_bundle//file:openjdk-8-jre-headless.deb",
     ],
     entrypoint = [
         "/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java",
