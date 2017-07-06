@@ -35,6 +35,7 @@ dpkg_src(
 
 dpkg(
     name = "package_bundle",
+    # dpkg_parser = "//package_manager:dpkg_parser.par",
     packages = [
         "libc6",
         "ca-certificates",

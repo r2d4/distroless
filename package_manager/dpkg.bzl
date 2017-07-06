@@ -2,7 +2,7 @@ def _dpkg_impl(repository_ctx):
   repository_ctx.file("file/BUILD", """
 package(default_visibility = ["//visibility:public"])
 deb_files = glob(["*.deb"])
-exports_files(deb_files)
+exports_files(deb_files + ["packages.bzl"])
 """)
 
   for pkg in repository_ctx.attr.packages:
@@ -15,7 +15,7 @@ exports_files(deb_files)
   package_files = ",".join([repository_ctx.path(src_path) for src_path in repository_ctx.attr.sources])
 
   args = [
-      repository_ctx.path(repository_ctx.attr._dpkg_parser),
+      repository_ctx.path(repository_ctx.attr.dpkg_parser),
       "--package-files", package_files,
       "--packages", ",".join(repository_ctx.attr.packages),
       "--bazel-compatible-names=True",
@@ -32,7 +32,7 @@ _dpkg = repository_rule(
             allow_files = True,
         ),
         "packages": attr.string_list(),
-        "_dpkg_parser": attr.label(
+        "dpkg_parser": attr.label(
             executable = True,
             default = Label("@dpkg_parser//file:dpkg_parser.par"),
             cfg = "host",

@@ -28,11 +28,14 @@ cacerts(
     name = "cacerts",
 )
 
+load("@package_bundle//file:packages.bzl", "packages")
+
 docker_build(
     name = "base",
     base = ":with_tmp",
     debs = [
-        "@package_bundle//file:libc6.deb",
+        #"@package_bundle//file:libc6.deb",
+        packages["libc6"],
         "@package_bundle//file:libssl1.0.0.deb",
         "@package_bundle//file:openssl.deb",
     ],

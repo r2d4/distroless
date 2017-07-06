@@ -26,7 +26,7 @@ from os import path
 from package_manager.parse_metadata import parse_package_metadata
 
 PACKAGES_FILE_NAME = "file/Packages.json"
-DEB_FILE_NAME = "file/pkg.deb"
+BAZEL_PKG_DICT_FILE = "file/packages.bzl"
 FILENAME_KEY = "Filename"
 
 parser = argparse.ArgumentParser(
@@ -37,6 +37,8 @@ parser.add_argument("--package-files", action='store',
                     help='A list of Packages.gz files to use')
 parser.add_argument("--packages", action='store',
                     help='A comma delimited list of packages to search for and download')
+parser.add_argument("--bazel-rule-name", action='store',
+                    help="The name of the bazel rule")
 
 parser.add_argument("--download-and-extract-only", action='store',
                     help='If True, download Packages.gz and make urls absolute from mirror url')
@@ -56,15 +58,16 @@ def main():
     if args.download_and_extract_only:
         download_package_list(args.mirror_url, args.distro, args.arch)
     else:
-        download_dpkg(args.package_files, args.packages, args.bazel_compatible_names)
+        download_dpkg(args.package_files, args.packages, args.bazel_compatible_names, args.bazel_rule_name)
 
 
-def download_dpkg(package_files, packages, bazel_compatible_names):
+def download_dpkg(package_files, packages, bazel_compatible_names, bazel_rule_name):
     """ Using an unzipped, json package file with full urls,
      downloads a .deb package
 
     Uses the 'Filename' key to download the .deb package
     """
+    bazel_pkg_dict = {}
     for pkg_name in packages.split(","):
         found = False
         for package_file in package_files.split(","):
@@ -74,13 +77,16 @@ def download_dpkg(package_files, packages, bazel_compatible_names):
                 pkg = metadata[pkg_name]
                 buf = urllib2.urlopen(pkg[FILENAME_KEY])
                 if bazel_compatible_names:
-                    pkg_name = bazel_compatible_name(pkg_name)
+                    bazel_pkg_dict[pkg_name] = "@" + bazel_rule_name + ":file/" + bazel_compatible_name(pkg_name) + ".deb"
                 with open(path.join("file", pkg_name + ".deb"), 'w') as f:
                     f.write(buf.read())
                 found = True
                 break
         if not found:
             raise Exception("Package %s not found in any of the sources" % pkg_name)
+    with open(BAZEL_PKG_DICT_FILE, 'w') as f:
+        f.write("packages = ") 
+        f.write(json.dumps(bazel_pkg_dict))
 
 def bazel_compatible_name(package_name):
     """Returns to a bazel label compatible string
